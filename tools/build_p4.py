@@ -5,7 +5,7 @@ import subprocess
 import sys
 
 ROOT=Path(__file__).resolve().parents[1]
-FQBN='esp32:esp32:esp32p4:ChipVariant=postv3,FlashSize=32M,PartitionScheme=app5M_fat24M_32MB,PSRAM=enabled,USBMode=hwcdc,CDCOnBoot=cdc,FlashMode=qio'
+FQBN='esp32:esp32:esp32p4:ChipVariant=postv3,FlashSize=32M,PartitionScheme=app13M_data7M_32MB,PSRAM=enabled,USBMode=hwcdc,CDCOnBoot=cdc,FlashMode=qio'
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
