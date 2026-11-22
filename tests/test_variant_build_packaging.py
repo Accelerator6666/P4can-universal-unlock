@@ -6,7 +6,7 @@ import shutil
 import hashlib
 
 project = Path(__file__).resolve().parents[1]
-partition_scheme = "app13M_data7M_32MB"
+partition_scheme = "app5M_fat24M_32MB"
 expected_partition = f"PartitionScheme={partition_scheme}"
 
 # Keep all user-facing and automated build entry points on one supported menu ID.
@@ -18,7 +18,9 @@ for relative in (
 ):
     content = (project / relative).read_text(encoding="utf-8")
     assert expected_partition in content, f"{relative} is missing {expected_partition}"
-    for stale in ("app3M_fat9M_16MB", "app3M_fat16M_16MB", "app5M_fat24M_32MB"):
+    if relative.startswith("README"):
+        assert "large_fat_32MB.csv" in content, f"{relative} is missing the official CSV mapping"
+    for stale in ("app13M_data7M_32MB", "app3M_fat9M_16MB", "app3M_fat16M_16MB"):
         assert stale not in content, f"{relative} still contains stale partition ID {stale}"
 
 with tempfile.TemporaryDirectory(prefix="p4-build-test-") as tmp:
