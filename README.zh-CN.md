@@ -123,7 +123,7 @@ Windows 环境安装并配置好 Arduino CLI、Arduino-ESP32 3.3.12 和 Python �
 3. Rev 3.x 简体中文版
 4. Rev 1.x 简体中文版
 
-中文版本会在独立的临时工作目录中，将中文 Dashboard 嵌入待编译副本；不会直接覆盖仓库中的英文 `dashboard_source.html`。
+英文和中文版本都会先复制到独立的临时 Sketch 工作目录，目录名与 `.ino` 主文件名保持一致。中文版本会在临时副本中嵌入中文 Dashboard；不会覆盖仓库中的英文 `dashboard_source.html` 或 `index_html.h`。
 
 正式编译前可以先运行 Dry Run：
 
