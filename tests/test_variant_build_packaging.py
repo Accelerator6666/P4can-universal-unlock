@@ -50,7 +50,7 @@ from pathlib import Path
 args = sys.argv
 fqbn = args[args.index('--fqbn') + 1]
 assert 'FlashSize=32M' in fqbn, fqbn
-assert 'PartitionScheme=app13M_data7M_32MB' in fqbn, fqbn
+assert 'PartitionScheme=app5M_fat24M_32MB' in fqbn, fqbn
 with (Path(__file__).parent / 'fake-fqbns.txt').open('a', encoding='utf-8') as log:
     log.write(fqbn + '\n')
 p = Path(args[args.index('--output-dir') + 1])
