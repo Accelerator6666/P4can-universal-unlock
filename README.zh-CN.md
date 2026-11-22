@@ -92,16 +92,16 @@
 | Board | `ESP32P4 Dev Module` |
 | Chip variant | 根据芯片 Revision 选择 |
 | Flash size | 32 MB |
-| Partition scheme | `app13M_data7M_32MB`（映射到 `default_32MB.csv`） |
+| Partition scheme | `app5M_fat24M_32MB`（映射到 `large_fat_32MB.csv`） |
 | PSRAM | Enabled |
 | USB mode | Hardware CDC/JTAG |
 | CDC on boot | Enabled |
 
 分区配置说明：
 
-- `app13M_data7M_32MB` 是 Arduino-ESP32 的分区菜单 ID，不是 CSV 文件名。
-- 它映射到 Arduino-ESP32 3.3.12 的 `tools/partitions/default_32MB.csv`。
-- 分区表包含两个 OTA APP 槽位，每个为 `0xC80000`（12.5 MiB）；另有 `0x6C0000`（6.75 MiB）的 SPIFFS 分区，以及 NVS、OTA Data 和 CoreDump 分区。
+- `app5M_fat24M_32MB` 是 Arduino-ESP32 的分区菜单 ID，不是 CSV 文件名。
+- 它映射到 Arduino-ESP32 3.3.12 的 `tools/partitions/large_fat_32MB.csv`。
+- 分区表包含两个 OTA APP 槽位，每个为 `0x480000`（4.5 MiB）；另有 `0x16E0000`（22.875 MiB）的 FAT 分区，以及 NVS、OTA Data 和 CoreDump 分区。
 - 当前源码使用 NVS/`Preferences` 保存持久化设置；未发现直接调用 FFat、SPIFFS 或 LittleFS API。SPIFFS 分区目前作为布局预留，不代表固件正在使用它。
 - 此配置面向具有 32MB NOR Flash 的 ESP32-P4 开发板，例如 Waveshare ESP32-P4-WIFI6-KIT-A。请在刷写前核对实物板卡和芯片 Revision。
 
@@ -120,12 +120,12 @@
 
 REV3.X：
 ```text
-esp32:esp32:esp32p4:ChipVariant=postv3,FlashSize=32M,PartitionScheme=app13M_data7M_32MB,PSRAM=enabled,USBMode=hwcdc,CDCOnBoot=cdc,FlashMode=qio
+esp32:esp32:esp32p4:ChipVariant=postv3,FlashSize=32M,PartitionScheme=app5M_fat24M_32MB,PSRAM=enabled,USBMode=hwcdc,CDCOnBoot=cdc,FlashMode=qio
 ```
 
 REV1.X：
 ```text
-esp32:esp32:esp32p4:ChipVariant=prev3,FlashSize=32M,PartitionScheme=app13M_data7M_32MB,PSRAM=enabled,USBMode=hwcdc,CDCOnBoot=cdc,FlashMode=qio
+esp32:esp32:esp32p4:ChipVariant=prev3,FlashSize=32M,PartitionScheme=app5M_fat24M_32MB,PSRAM=enabled,USBMode=hwcdc,CDCOnBoot=cdc,FlashMode=qio
 ```
 
 ### 一键编译四种固件
