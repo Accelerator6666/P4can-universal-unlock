@@ -24,7 +24,7 @@ $finalBuild = Join-Path $sketch 'Final-Build'
 $sketchName = $sketchFiles[0].Name
 $firmwareName = $sketchFiles[0].BaseName
 $revisions = @{ postv3 = 'REV3.X'; prev3 = 'REV1.X' }
-$options = 'FlashSize=32M,PartitionScheme=app3M_fat9M_16MB,PSRAM=enabled,USBMode=hwcdc,CDCOnBoot=cdc,FlashMode=qio'
+$options = 'FlashSize=32M,PartitionScheme=app13M_data7M_32MB,PSRAM=enabled,USBMode=hwcdc,CDCOnBoot=cdc,FlashMode=qio'
 $failed = @()
 
 # Keep all compiler work directories and exported binaries isolated.
