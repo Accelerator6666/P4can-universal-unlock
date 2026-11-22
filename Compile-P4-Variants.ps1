@@ -24,7 +24,7 @@ $finalBuild = Join-Path $sketch 'Final-Build'
 $sketchName = $sketchFiles[0].Name
 $firmwareName = $sketchFiles[0].BaseName
 $revisions = @{ postv3 = 'REV3.X'; prev3 = 'REV1.X' }
-$options = 'FlashSize=32M,PartitionScheme=app3M_fat9M_16MB,PSRAM=enabled,USBMode=hwcdc,CDCOnBoot=cdc,FlashMode=qio'
+$options = 'FlashSize=32M,PartitionScheme=app5M_fat24M_32MB,PSRAM=enabled,USBMode=hwcdc,CDCOnBoot=cdc,FlashMode=qio'
 $failed = @()
 
 # Keep all compiler work directories and exported binaries isolated.
@@ -44,15 +44,33 @@ foreach ($configuration in @(
     $fqbn = "esp32:esp32:esp32p4:ChipVariant=$variant,$options"
     $revision = $revisions[$variant]
     $releaseName = "$firmwareName$languageSuffix"
-    $compileSketch = $sketch
-    if ($configuration.Chinese -and !$DryRun) {
-        $prepared = & $python (Join-Path $sketch 'tools/prepare_chinese_build.py') --project $sketch --destination (Join-Path $destination 'work') --output-root $output
-        if ($LASTEXITCODE -ne 0) {
+    $language = if ($configuration.Chinese) { 'zh-CN' } else { 'en' }
+    if ($DryRun) {
+        # A placeholder makes it explicit that the source is staged only during a real build.
+        $compileSketch = "<isolated-$language-sketch>"
+    } else {
+        New-Item -ItemType Directory -Path $destination, $buildPath, $artifacts -Force | Out-Null
+        $previousPreference = $ErrorActionPreference
+        try {
+            $ErrorActionPreference = 'Continue'
+            $prepared = & $python (Join-Path $sketch 'tools/prepare_variant_build.py') --project $sketch --destination (Join-Path $destination 'work') --output-root $output --language $language 2>&1
+            $prepareResult = $LASTEXITCODE
+        } finally {
+            $ErrorActionPreference = $previousPreference
+        }
+        if ($prepareResult -ne 0) {
             $failed += $buildId
-            Write-Host "FAILED: $buildId preparing Chinese dashboard" -ForegroundColor Red
+            Write-Host "FAILED: $buildId preparing $language sketch (exit $prepareResult)" -ForegroundColor Red
+            $prepared | ForEach-Object { Write-Host $_ -ForegroundColor Red }
             continue
         }
         $compileSketch = [string]($prepared | Select-Object -Last 1)
+        if ([string]::IsNullOrWhiteSpace($compileSketch) -or
+            !(Test-Path -LiteralPath (Join-Path $compileSketch $sketchName) -PathType Leaf)) {
+            $failed += $buildId
+            Write-Host "FAILED: $buildId prepared sketch path is invalid: $compileSketch" -ForegroundColor Red
+            continue
+        }
     }
     $cliArgs = @('compile', '--fqbn', $fqbn, '--build-path', $buildPath,
         '--output-dir', $artifacts, $compileSketch)
@@ -63,12 +81,11 @@ foreach ($configuration in @(
     Write-Host "Final OTA: $(Join-Path $finalBuild "$releaseName.OTA.$revision.bin")"
     Write-Host "Final fullflash: $(Join-Path $finalBuild "$releaseName.FULLFLASH.$revision.merged.bin")"
     if ($DryRun) {
-        if ($configuration.Chinese) { Write-Host 'Plan: copy sketch into isolated work folder, embed zh-CN dashboard, compile that copy.' }
+        Write-Host "Plan: prepare an isolated, correctly named sketch copy for $language."
+        if ($configuration.Chinese) { Write-Host 'The Chinese dashboard is embedded in the isolated copy only.' }
         Write-Host ('Command: "{0}" {1}' -f $cli, (($cliArgs | ForEach-Object { '"' + $_ + '"' }) -join ' '))
         continue
     }
-
-    New-Item -ItemType Directory -Path $destination, $buildPath, $artifacts -Force | Out-Null
     # Record all output while keeping Arduino CLI's own exit code authoritative.
     # Windows PowerShell can wrap native stderr as ErrorRecord objects.
     $previousPreference = $ErrorActionPreference

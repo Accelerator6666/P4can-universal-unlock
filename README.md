@@ -1,11 +1,13 @@
 # P4-CAN Universal Unlock v3.35.3
 
+[简体中文](README.zh-CN.md) | [English](README.md)
+
 The ultimate solution for accessing all features using an ESP32-P4/C6 board + 3 × SN65HVD230 CAN transceivers.
 
 DOESN'T WORK CORRECTLY BEFORE 2026.20 Update
 
-[Dashboard Simulation](https://06066060606060.github.io/T-Unleash_APP/dashboard_demo.html)  
-[仪表板模拟](https://06066060606060.github.io/T-Unleash_APP/dashboard_demo.zh-CN.html)
+[Dashboard Simulation](dashboard_demo.html)  
+[简体中文 Dashboard 演示](zh-CN/dashboard_demo.zh-CN.html)
 
 **Update 3.35.3**  
 - Added Lighting option (Experimental)  
@@ -90,18 +92,20 @@ Use Arduino-ESP32 3.3.12 with the following settings:
 - Board: `ESP32P4 Dev Module`
 - Chip variant: **Check your chip revision**
 - Flash size: 32 MB
-- Partition scheme: `app3M_fat16M_16MB`
+- Partition scheme: `app5M_fat24M_32MB` (maps to `large_fat_32MB.csv`)
 - PSRAM: enabled
 - USB mode: Hardware CDC/JTAG
 - CDC on boot: enabled
 
+The `app5M_fat24M_32MB` Arduino menu option maps to `tools/partitions/large_fat_32MB.csv`. It provides two OTA application slots of 4.5 MiB each and a 22.875 MiB FAT partition. The current firmware uses NVS/`Preferences` for persistent settings; the FAT area is reserved by the partition layout and is not currently referenced by a direct FFat API call in the source.
+
 postv3:
 ```text
-esp32:esp32:esp32p4:ChipVariant=postv3,FlashSize=32M,PartitionScheme=app3M_fat9M_16MB,PSRAM=enabled,USBMode=hwcdc,CDCOnBoot=cdc,FlashMode=qio
+esp32:esp32:esp32p4:ChipVariant=postv3,FlashSize=32M,PartitionScheme=app5M_fat24M_32MB,PSRAM=enabled,USBMode=hwcdc,CDCOnBoot=cdc,FlashMode=qio
 ```
 prev3:
 ```text
-esp32:esp32:esp32p4:ChipVariant=prev3,FlashSize=32M,PartitionScheme=app3M_fat9M_16MB,PSRAM=enabled,USBMode=hwcdc,CDCOnBoot=cdc,FlashMode=qio
+esp32:esp32:esp32p4:ChipVariant=prev3,FlashSize=32M,PartitionScheme=app5M_fat24M_32MB,PSRAM=enabled,USBMode=hwcdc,CDCOnBoot=cdc,FlashMode=qio
 ```
 
 ### Chip revision
