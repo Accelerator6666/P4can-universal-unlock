@@ -27,7 +27,7 @@
 - 重新整理设置页面。
 - 新增 S3XY 动作：AP 左/右变道。
 - 新增简体中文（zh-CN）版本。
-- 更多更新内容请查看 [CHANGELOG.md](CHANGELOG.md)。
+- 更多更新内容请查看 [中文更新记录](CHANGELOG.zh-CN.md)；更早版本请查看 [英文完整更新记录](CHANGELOG.md)。
 
 ## 功能概览
 
@@ -145,6 +145,12 @@ P4-CAN 涉及车辆 CAN 总线通信。部分功能可能发送或注入 CAN 报
 - 不要将实验性功能或本项目的测试结果视为 Tesla 官方支持或安全认证。
 
 使用者应自行评估风险，并遵守当地法律法规。项目不保证适用于所有车辆、硬件修订或软件版本。
+
+## 中文技术文档
+
+- [FSD 可视化设置说明](FSD_SETTINGS.zh-CN.md)
+- [SmartShift 自动换挡说明](SMARTSHIFT.zh-CN.md)
+- [英文验证记录](VALIDATION.md)
 
 ## 支持项目
 
