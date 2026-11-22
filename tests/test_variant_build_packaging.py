@@ -4,7 +4,7 @@ import tempfile, subprocess, shutil, hashlib
 project=Path(__file__).resolve().parents[1]
 with tempfile.TemporaryDirectory(prefix='p4-build-test-') as tmp:
  root=Path(tmp)/'P4-CAN-Universal-v9.99.0';root.mkdir()
- for name in ['Compile-P4-Variants.ps1','tools/prepare_chinese_build.py','tools/build_dashboard.py']:
+ for name in ['Compile-P4-Variants.ps1','tools/prepare_variant_build.py','tools/build_dashboard.py']:
   p=root/name;p.parent.mkdir(exist_ok=True);shutil.copy(project/name,p)
  (root/'P4-CAN-Universal-v9.99.0.ino').write_text('// mock')
  (root/'dashboard_source.html').write_text('original dashboard')
