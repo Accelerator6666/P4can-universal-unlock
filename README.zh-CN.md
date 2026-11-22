@@ -92,10 +92,18 @@
 | Board | `ESP32P4 Dev Module` |
 | Chip variant | 根据芯片 Revision 选择 |
 | Flash size | 32 MB |
-| Partition scheme | `app3M_fat16M_16MB` |
+| Partition scheme | `app13M_data7M_32MB`（映射到 `default_32MB.csv`） |
 | PSRAM | Enabled |
 | USB mode | Hardware CDC/JTAG |
 | CDC on boot | Enabled |
+
+分区配置说明：
+
+- `app13M_data7M_32MB` 是 Arduino-ESP32 的分区菜单 ID，不是 CSV 文件名。
+- 它映射到 Arduino-ESP32 3.3.12 的 `tools/partitions/default_32MB.csv`。
+- 分区表包含两个 OTA APP 槽位，每个为 `0xC80000`（12.5 MiB）；另有 `0x6C0000`（6.75 MiB）的 SPIFFS 分区，以及 NVS、OTA Data 和 CoreDump 分区。
+- 当前源码使用 NVS/`Preferences` 保存持久化设置；未发现直接调用 FFat、SPIFFS 或 LittleFS API。SPIFFS 分区目前作为布局预留，不代表固件正在使用它。
+- 此配置面向具有 32MB NOR Flash 的 ESP32-P4 开发板，例如 Waveshare ESP32-P4-WIFI6-KIT-A。请在刷写前核对实物板卡和芯片 Revision。
 
 ### 芯片 Revision 与编译目标
 
@@ -107,6 +115,18 @@
 | V3.X / REV3.X | `postv3` | `postv3` |
 
 不要仅根据商品标题或卖家描述判断芯片 Revision；应以实际芯片信息为准。
+
+手动编译时，两个芯片变体使用相同的 32MB Flash 与分区配置，仅 `ChipVariant` 不同：
+
+REV3.X：
+```text
+esp32:esp32:esp32p4:ChipVariant=postv3,FlashSize=32M,PartitionScheme=app13M_data7M_32MB,PSRAM=enabled,USBMode=hwcdc,CDCOnBoot=cdc,FlashMode=qio
+```
+
+REV1.X：
+```text
+esp32:esp32:esp32p4:ChipVariant=prev3,FlashSize=32M,PartitionScheme=app13M_data7M_32MB,PSRAM=enabled,USBMode=hwcdc,CDCOnBoot=cdc,FlashMode=qio
+```
 
 ### 一键编译四种固件
 
@@ -132,8 +152,6 @@ Windows 环境安装并配置好 Arduino CLI、Arduino-ESP32 3.3.12 和 Python �
 ```
 
 构建结果输出到 `Final-Build/`。中文固件文件名带有 `.zh-CN` 后缀；文件名同时包含 `REV1.X` 或 `REV3.X`，便于区分芯片版本。
-
-> **分区参数需要注意：** 上表保留了项目 README 原有的 `app3M_fat16M_16MB` 参数；但当前 `Compile-P4-Variants.ps1` 自动编译脚本实际使用的是 `app3M_fat9M_16MB`。两者不一致。使用一键编译脚本时，以脚本中的参数为准；如果要手动编译，请先核对项目当前版本要求，不要直接混用。
 
 ## 安全提示
 
