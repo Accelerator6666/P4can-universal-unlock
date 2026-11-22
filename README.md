@@ -1,11 +1,13 @@
 # P4-CAN Universal Unlock v3.35.3
 
+[简体中文](README.zh-CN.md) | [English](README.md)
+
 The ultimate solution for accessing all features using an ESP32-P4/C6 board + 3 × SN65HVD230 CAN transceivers.
 
 DOESN'T WORK CORRECTLY BEFORE 2026.20 Update
 
-[Dashboard Simulation](https://06066060606060.github.io/T-Unleash_APP/dashboard_demo.html)  
-[仪表板模拟](https://06066060606060.github.io/T-Unleash_APP/dashboard_demo.zh-CN.html)
+[Dashboard Simulation](dashboard_demo.html)  
+[简体中文 Dashboard 演示](zh-CN/dashboard_demo.zh-CN.html)
 
 **Update 3.35.3**  
 - Added Lighting option (Experimental)  
