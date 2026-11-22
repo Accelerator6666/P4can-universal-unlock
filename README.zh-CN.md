@@ -166,4 +166,4 @@ P4-CAN 涉及车辆 CAN 总线通信。部分功能可能发送或注入 CAN 报
 
 ## License
 
-GNU GPL v3 或更高版本。详见 [LICENSE](LICENSE)。
+项目 README 声明采用 GNU GPL v3 或更高版本。不过当前 Fork 的仓库根目录未找到 `LICENSE` 文件，建议在发布或分发前补齐并核对正式许可证文本。
