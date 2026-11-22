@@ -10,9 +10,10 @@
 - 在标准版和中文 Dashboard 中加入 AP 强制远光灯，以及动态刹车灯设置（关闭 / 轻踩刹车 / 重踩刹车）。
 - 灯光功能独立放在 `lighting/` 模块中，复用提供的纯逻辑参考实现。
 - 增加灯光设置持久化、`/api/lighting/stats`、`/api/lighting/update`，并监听三条物理总线的 RX 路径。
-- 灯光功能由独立任务处理。AP 权限需要驾驶员主动踩下制动踏板（PUSH）条件；AP 退出或数据过期时停止。
+- 灯光功能由独立任务处理。AP 权限要求驾驶员 PUSH 输入；AP 退出或状态数据过期时停止。功能向 BODY `0x3E9` 写入，并可在新鲜的 dark feedback 条件下发送 4 帧校验正确的 `0x249` PUSH 报文。
 - 动态刹车灯使用踏板输入，并要求新鲜的 D 挡状态及车速大于 8 km/h；仅处理 `0x3E9` 刹车请求位。
 - 保留传输/恢复门控和常规转向灯优先级。
+- 新增 `Compile-P4-Variants.cmd` / `.ps1`，用于编译 postv3 和 prev3；使用 32 MB Flash、`app3M_fat9M_16MB` 分区、PSRAM 和 USB 配置。编译产物、临时工作文件和日志按变体隔离在 `build_variants/<variant>`，支持 Dry Run 并报告失败项。
 
 ## v3.35.2 — 2026-11-19
 
