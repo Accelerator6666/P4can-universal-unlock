@@ -92,18 +92,20 @@ Use Arduino-ESP32 3.3.12 with the following settings:
 - Board: `ESP32P4 Dev Module`
 - Chip variant: **Check your chip revision**
 - Flash size: 32 MB
-- Partition scheme: `app3M_fat16M_16MB`
+- Partition scheme: `app13M_data7M_32MB` (maps to `default_32MB.csv`)
 - PSRAM: enabled
 - USB mode: Hardware CDC/JTAG
 - CDC on boot: enabled
 
+The `app13M_data7M_32MB` Arduino menu option maps to `tools/partitions/default_32MB.csv`. It provides two OTA application slots of 12.5 MiB each and a 6.75 MiB SPIFFS partition. The current firmware uses NVS/`Preferences` for persistent settings; the SPIFFS area is reserved by the partition layout and is not currently referenced by a direct SPIFFS/FFat/LittleFS API call in the source.
+
 postv3:
 ```text
-esp32:esp32:esp32p4:ChipVariant=postv3,FlashSize=32M,PartitionScheme=app3M_fat9M_16MB,PSRAM=enabled,USBMode=hwcdc,CDCOnBoot=cdc,FlashMode=qio
+esp32:esp32:esp32p4:ChipVariant=postv3,FlashSize=32M,PartitionScheme=app13M_data7M_32MB,PSRAM=enabled,USBMode=hwcdc,CDCOnBoot=cdc,FlashMode=qio
 ```
 prev3:
 ```text
-esp32:esp32:esp32p4:ChipVariant=prev3,FlashSize=32M,PartitionScheme=app3M_fat9M_16MB,PSRAM=enabled,USBMode=hwcdc,CDCOnBoot=cdc,FlashMode=qio
+esp32:esp32:esp32p4:ChipVariant=prev3,FlashSize=32M,PartitionScheme=app13M_data7M_32MB,PSRAM=enabled,USBMode=hwcdc,CDCOnBoot=cdc,FlashMode=qio
 ```
 
 ### Chip revision
