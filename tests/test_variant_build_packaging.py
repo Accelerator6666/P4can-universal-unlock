@@ -37,7 +37,7 @@ with tempfile.TemporaryDirectory(prefix="p4-build-test-") as tmp:
     (root / "dashboard_source.html").write_text("original dashboard", encoding="utf-8")
     (root / "index_html.h").write_text("original header", encoding="utf-8")
     (root / "zh-CN").mkdir()
-    (root / "zh-CN/dashboard_source.zh-CN.html").write_bytes("<html>\\u4e2d\\u6587</html>".encode())
+    (root / "zh-CN/dashboard_source.zh-CN.html").write_bytes("<html>\u4e2d\u6587</html>".encode())
     before = {
         path.relative_to(root): hashlib.sha256(path.read_bytes()).digest()
         for path in root.rglob("*") if path.is_file()
@@ -50,7 +50,7 @@ fqbn = args[args.index('--fqbn') + 1]
 assert 'FlashSize=32M' in fqbn, fqbn
 assert 'PartitionScheme=app13M_data7M_32MB' in fqbn, fqbn
 with (Path(__file__).parent / 'fake-fqbns.txt').open('a', encoding='utf-8') as log:
-    log.write(fqbn + '\\n')
+    log.write(fqbn + '\n')
 p = Path(args[args.index('--output-dir') + 1])
 p.mkdir(parents=True, exist_ok=True)
 sketch = Path(args[-1])
