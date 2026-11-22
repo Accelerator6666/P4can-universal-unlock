@@ -97,7 +97,7 @@ Use Arduino-ESP32 3.3.12 with the following settings:
 - USB mode: Hardware CDC/JTAG
 - CDC on boot: enabled
 
-The `app5M_fat24M_32MB` Arduino menu option maps to `tools/partitions/large_fat_32MB.csv`. It provides two OTA application slots of 4.5 MiB each and a 22.875 MiB FAT partition. The current firmware uses NVS/`Preferences` for persistent settings; the SPIFFS area is reserved by the partition layout and is not currently referenced by a direct SPIFFS/FFat/LittleFS API call in the source.
+The `app5M_fat24M_32MB` Arduino menu option maps to `tools/partitions/large_fat_32MB.csv`. It provides two OTA application slots of 4.5 MiB each and a 22.875 MiB FAT partition. The current firmware uses NVS/`Preferences` for persistent settings; the FAT area is reserved by the partition layout and is not currently referenced by a direct FFat API call in the source.
 
 postv3:
 ```text
